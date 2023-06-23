@@ -3,7 +3,7 @@ import functools
 from auth_db import signup_db,signout_db,get_account
 
 
-bp = Blueprint("auth", __name__)
+bp = Blueprint("auth", __name__,url_prefix="/hogetter")
 
 def login_required(view):
     # 2023.6.21 sessionキーがリクエスト間しか情報を保たないはずなのに、logoutするときはsession.clear()をする。なぜ？
