@@ -1,3 +1,2 @@
 .space
-*.pyc
-/__pycache__/
+/flask_file/__pycache__/
