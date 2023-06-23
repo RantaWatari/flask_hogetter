@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<body>
+    <h1>{{command.upper()}}</h1>
+    <form method="post" action="/{{command}}">
+        <label for="username">Username</label>
+        <input name="username" id="username" required>
+        <label for="password">Password</label>
+        <input type="password" name="password" id="password" required>
+        <input type="submit" value="{{command}}">
+    </form>
+    
+</body>
+
+{% endblock %}
