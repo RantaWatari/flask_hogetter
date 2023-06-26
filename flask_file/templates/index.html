@@ -2,6 +2,24 @@
 
 {% block content %}
 <body>
-    <h1>Hello!!</h1>
+    <h1>HOGETTER HOME</h1>
+    <div>
+        <a href="{{ url_for('auth.logout')}}">logout</a>
+        <a href="{{ url_for('auth.signout')}}", onclick="return confirm('Are you sure?')">signout</a>
+    </div>
+    <div>
+        <form method="post" action="/hogetter/create">
+            <textarea name="hogeet" id="hogeet"></textarea>
+            <input type="submit" value="hogeet">
+        </form>
+    </div>
+    <div>
+        <ul type="None">
+            {% for post in posts %}
+                <li>{{post["key"]}} : {{post["text"]}}</li>
+            {% endfor %}
+        </ul>
+    </div>
+
 </body>
 {% endblock %}
