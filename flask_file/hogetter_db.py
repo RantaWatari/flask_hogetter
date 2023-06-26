@@ -35,7 +35,6 @@ def show_db_text():
     db = connect_db_text()
     fetch_data = db.fetch()
     
-    #(3)
     try:  
         ## Usefull only deploy enviroment
         for i in fetch_data:
