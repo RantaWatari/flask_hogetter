@@ -3,6 +3,7 @@
 {% block content %}
 <body>
     <h1>HOGETTER HOME</h1>
+    <h3>Welcome {{owner}}</h3>
     <div>
         <a href="{{ url_for('auth.logout')}}">logout</a>
         <a href="{{ url_for('auth.signout')}}", onclick="return confirm('Are you sure?')">signout</a>
@@ -16,7 +17,7 @@
     <div>
         <ul type="None">
             {% for post in posts %}
-                <li>{{post["key"]}} : {{post["text"]}}</li>
+                <li>{{post["time"][0]}}/{{post["time"][1]}}/{{post["time"][2]}} {{post["time"][3]}}:{{post["time"][4]}}:{{post["time"][5]}} | {{post["text"]}} :: {{owner}} :: {{post["key"]}}</li>
             {% endfor %}
         </ul>
     </div>
