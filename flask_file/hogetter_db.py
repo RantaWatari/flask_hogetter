@@ -31,7 +31,14 @@ def now_time():
     return now
 
 
-def show_db_text():
+def show_db_text(hogeet_id):
+    post = connect_db_text().get(hogeet_id)
+
+    return post
+
+
+
+def show_db_text_all():
     db = connect_db_text()
     fetch_data = db.fetch()
     
