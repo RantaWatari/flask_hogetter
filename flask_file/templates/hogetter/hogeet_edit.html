@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<body>
+    <h1>Edit</h1>
+    <form method="post" action="/hogetter/{{hogeet_content['key']}}/update">
+        <textarea name="hogeet" id="hogeet">{{hogeet_content["text"]}}</textarea>
+        <input type="submit" value="update">
+    </form>
+    <a href="/hogetter/{{hogeet_content['key']}}/delete", onclick="return confirm('Are you sure?')">delete</a>
+    
+    <br>
+    {{hogeet_content}}
+
+</body>
+
+{% endblock %}
