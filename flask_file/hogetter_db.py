@@ -68,3 +68,9 @@ def create_db_text(hogeet):
 
 def delete_db_text(hogeet_id):
     connect_db_text().delete(hogeet_id)
+
+
+def update_db_text(hogeet_id,hogeet_text):
+    connect_db_text().update({
+        "text":hogeet_text
+    },key=hogeet_id)

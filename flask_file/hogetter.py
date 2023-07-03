@@ -1,6 +1,6 @@
 from flask import Blueprint,render_template,request,redirect,url_for,g
 from auth import login_required
-from hogetter_db import show_db_text,show_db_text_all,create_db_text,delete_db_text
+from hogetter_db import show_db_text,show_db_text_all,create_db_text,delete_db_text,update_db_text
 
 bp = Blueprint("hogetter",__name__,url_prefix="/hogetter")
 
@@ -40,7 +40,8 @@ def delete(hogeet_id):
 @bp.route("/<hogeet_id>/update",methods=["GET","POST"])
 @login_required
 def update(hogeet_id):
-    print("test_update")
-    pass
+    
+    hogeet_text = request.form.get("hogeet_text")
+    update_db_text(hogeet_id=hogeet_id,hogeet_text=hogeet_text)
     
     return redirect(url_for("hogetter.index"))

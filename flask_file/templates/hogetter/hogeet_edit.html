@@ -4,7 +4,7 @@
 <body>
     <h1>Edit</h1>
     <form method="post" action="/hogetter/{{hogeet_content['key']}}/update">
-        <textarea name="hogeet" id="hogeet">{{hogeet_content["text"]}}</textarea>
+        <textarea name="hogeet_text" id="hogeet_text">{{hogeet_content["text"]}}</textarea>
         <input type="submit" value="update">
     </form>
     <a href="/hogetter/{{hogeet_content['key']}}/delete", onclick="return confirm('Are you sure?')">delete</a>
