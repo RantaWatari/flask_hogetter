@@ -1,6 +1,7 @@
 from deta import Deta
 import datetime
 from flask import g
+from hashlib import sha256
 
 def connect_db_text():
     db = Deta(project_key="c0wmhhz3nbe_tc1hZ2nHqv9o6f8rrVRqpADMqxL7jtjX")
@@ -59,10 +60,14 @@ def show_db_text_all():
 
 def create_db_text(hogeet):
     
+    pre_new_id = f"{g.user} + {now_time()} + {hogeet}".encode("utf-8")
+    hogeet_id = sha256(pre_new_id).hexdigest()
+
     connect_db_text().put({
         "time":now_time(),
         "owner":g.user,
-        "text":hogeet
+        "text":hogeet,
+        "key":hogeet_id
     })
 
 
