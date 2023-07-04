@@ -1,6 +1,6 @@
 from flask import Blueprint,render_template,request,redirect,url_for,g
 from auth import login_required
-from hogetter_db import show_db_text,show_db_text_all,create_db_text,delete_db_text,update_db_text
+from hogetter_db_base import show_db_text_single,show_db_text_all,create_db_text,delete_db_text,update_db_text,generate_hogeet_id
 
 bp = Blueprint("hogetter",__name__,url_prefix="/hogetter")
 
@@ -14,8 +14,9 @@ def index():
 @bp.route("/create",methods=["POST"])
 @login_required
 def create():
-    hogeet = request.form.get("hogeet")
-    create_db_text(hogeet)
+    hogeet_text = request.form.get("hogeet")
+    create_db_text(hogeet_text=hogeet_text, hogeet_id=generate_hogeet_id(hogeet_text=hogeet_text))
+
 
     return redirect(url_for("hogetter.index"))
 
@@ -23,7 +24,7 @@ def create():
 @bp.route("/<hogeet_id>",methods=["GET"])
 @login_required
 def hogeet_edit(hogeet_id):
-    hogeet_content = show_db_text(hogeet_id=hogeet_id)
+    hogeet_content = show_db_text_single(hogeet_id=hogeet_id)
     
     return render_template("hogetter/hogeet_edit.html",hogeet_content=hogeet_content)
 

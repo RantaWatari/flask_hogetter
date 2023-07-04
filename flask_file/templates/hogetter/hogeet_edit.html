@@ -3,6 +3,7 @@
 {% block content %}
 <body>
     <h1>Edit</h1>
+    <a href="/hogetter">HOME</a>
     <form method="post" action="/hogetter/{{hogeet_content['key']}}/update">
         <textarea name="hogeet_text" id="hogeet_text">{{hogeet_content["text"]}}</textarea>
         <input type="submit" value="update">
