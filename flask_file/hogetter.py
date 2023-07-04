@@ -15,7 +15,9 @@ def index():
 @login_required
 def create():
     hogeet_text = request.form.get("hogeet")
-    create_db_text(hogeet_text=hogeet_text, hogeet_id=generate_hogeet_id(hogeet_text=hogeet_text))
+    
+    hogeet_id = generate_hogeet_id(hogeet_text=hogeet_text)
+    create_db_text(hogeet_text=hogeet_text, hogeet_id=hogeet_id)
 
 
     return redirect(url_for("hogetter.index"))
