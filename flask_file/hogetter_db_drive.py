@@ -1,4 +1,5 @@
 from deta import Deta
+from flask import g
 from hashlib import sha256
 
 def connect_db_drive():
@@ -6,3 +7,15 @@ def connect_db_drive():
     db = db.Drive(name="hogetter_drive")
     return db
 
+def generate_content_id(hogeet_id:str,content_name:str) -> str:
+
+    pre_new_id = f"{hogeet_id} + {content_name}".encode("utf-8")
+    content_id = sha256(pre_new_id).hexdigest()
+
+    return content_id
+
+
+
+def put_db_drive(name:str,data,content_type:str):
+    connect_db_drive().put(name=name,data=data,content_type=content_type)
+    
