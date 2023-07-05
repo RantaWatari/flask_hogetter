@@ -61,13 +61,14 @@ def show_db_text_all():
     return posts
 
 
-def create_db_text(hogeet_text:str,hogeet_id:str):
+def create_db_text(hogeet_text:str,hogeet_id:str,content_id:str):
     
     connect_db_text().put({
         "time":now_time(),
         "owner":g.user,
         "text":hogeet_text,
-        "key":hogeet_id
+        "key":hogeet_id,
+        "content_id":content_id
     })
 
 

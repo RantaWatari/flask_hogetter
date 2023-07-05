@@ -1,7 +1,7 @@
-from flask import Blueprint,render_template,request,redirect,url_for,g
+from flask import Blueprint,render_template,request,redirect,url_for,g,Response,stream_with_context
 from auth import login_required
 from hogetter_db_base import show_db_text_single,show_db_text_all,create_db_text,delete_db_text,update_db_text,generate_hogeet_id
-from hogetter_db_drive import generate_content_id,put_db_drive
+from hogetter_db_drive import generate_content_id,put_db_drive,show_db_drive
 
 bp = Blueprint("hogetter",__name__,url_prefix="/hogetter")
 
@@ -15,14 +15,22 @@ def index():
 @bp.route("/create",methods=["POST"])
 @login_required
 def create():
-    hogeet_text = request.form.get("hogeet")
-#    content = request.files("content")
-#    print(hogeet_text,content.filename)
+    hogeet_text = request.form.get("hogeet") 
+    content_file = request.files["content"]
 
+    # hogeet_textとcontent_fileをBaseとDriveに保存するためにkey（hogeet_id,content_id）を作る。
     hogeet_id = generate_hogeet_id(hogeet_text=hogeet_text)
-    #content_id = generate_content_id(hogeet_id=hogeet_id,content_name=content.filename)
-    create_db_text(hogeet_text=hogeet_text, hogeet_id=hogeet_id)
 
+    if content_file.filename != "":
+        content_id = generate_content_id(hogeet_id=hogeet_id,content_name=content_file.filename,content_type=content_file.content_type)
+    else:
+        content_id = None
+
+    # 生成されたkeyを含めてBaseとDriveに保存。
+    create_db_text(hogeet_text=hogeet_text, hogeet_id=hogeet_id,content_id=content_id)
+
+    if content_file.filename != "":
+        put_db_drive(name=content_id,data=content_file,content_type=content_file.content_type)
 
     return redirect(url_for("hogetter.index"))
 
@@ -57,10 +65,22 @@ def update(hogeet_id):
 
 ################################ Drive #############################################
 
-@bp.route("/drive/put",methods=["GET"])
-@login_required
-def drive_put():
-    pass
+@bp.route("/drive/<content_id>",methods=["GET"])
+def drive_img(content_id):
+    if request.method == "GET":
+
+        get_content = show_db_drive(content_id)
+
+        get_content_format = content_id.split(".")[-1]
+        get_content = get_content.iter_chunks()
+        
+        if get_content_format in ["mp4"]:
+                        
+            return Response(stream_with_context(get_content),content_type=f"video/{get_content_format}")
+        else:
+
+            return Response(stream_with_context(get_content),content_type=f"image/{get_content_format}")
+
 
 
 @bp.route("/drive/<content_id>",methods=["GET"])
