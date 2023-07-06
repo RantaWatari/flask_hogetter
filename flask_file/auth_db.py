@@ -19,7 +19,7 @@ def signout_db(username):
      connect_db().delete(username)
 
 
-def get_account(username,password):
+def get_account(username):
         stored_account = connect_db().get(username)
         return stored_account
     

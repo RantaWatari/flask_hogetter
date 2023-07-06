@@ -1,4 +1,4 @@
-from flask import Blueprint,render_template,request,session,redirect,url_for,g
+from flask import Blueprint,render_template,request,session,redirect,url_for,g,flash
 import functools
 from auth_db import signup_db,signout_db,get_account
 
@@ -35,11 +35,26 @@ def signup():
     if request.method == "POST":
         username = request.form.get("username")
         password = request.form.get("password")
+        
 
-        signup_db(username=username,password=password)
+        error = None        
+        if not username:
+            error = "Username is required"
+        elif not password:
+            error = "Password is required"
+        else:
+            confirm_get_account = get_account(username=username)
+            if confirm_get_account != None:
+                error = f"User {username} is already exist."
 
 
-        return render_template("auth/auth_form.html",command = "login")
+        if confirm_get_account == None:
+            signup_db(username=username,password=password)
+            return render_template("auth/auth_form.html",command = "login")
+        
+        flash(error)
+
+        return render_template("auth/auth_form.html",command = "signup")
 
 
 @bp.route("/signout",methods=["GET","POST"])
@@ -67,7 +82,7 @@ def login():
         username = request.form.get("username")
         password = request.form.get("password")
 
-        if get_account(username=username,password=password)["password"] == password:
+        if get_account(username=username)["password"] == password:
 
             session.clear()
             session["username"] = username

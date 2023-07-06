@@ -2,7 +2,8 @@
 
 {% block content %}
 <body>
-    <h1>{{command.upper()}}</h1>
+    <a href="/hogetter/"><h1>HOGETTER HOME</h1></a>
+    <h3>{{command.upper()}}</h3>
     <form method="post" action="/hogetter/{{command}}">
         <label for="username">Username</label>
         <input name="username" id="username" required>
@@ -11,6 +12,13 @@
         <input type="submit" value="{{command}}">
     </form>
     
+    {% for message in get_flashed_messages() %}
+        <br>
+        <h4>Error Message</h4>
+        <div class="flash">{{ message }}</div>
+    {% endfor %}
+ 
+
 </body>
 
 {% endblock %}
