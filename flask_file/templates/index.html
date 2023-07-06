@@ -33,7 +33,9 @@
         </ul>
     </div>
 
-{{posts}}
+{% for post in posts %}
+    {{post}}<br>
+{% endfor %}
 
 </body>
 {% endblock %}
