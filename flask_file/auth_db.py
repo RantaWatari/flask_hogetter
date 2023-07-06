@@ -1,6 +1,7 @@
 from deta import Deta
 
 
+
 def connect_db():
     db = Deta(project_key="c0wmhhz3nbe_KBbLfJ9kud5Ji9DCorDGKuJ3M4w61aUY")
     db = db.Base(name="users")

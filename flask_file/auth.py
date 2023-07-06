@@ -1,6 +1,8 @@
 from flask import Blueprint,render_template,request,session,redirect,url_for,g,flash
 import functools
 from auth_db import signup_db,signout_db,get_account
+from werkzeug.security import check_password_hash
+from werkzeug.security import generate_password_hash
 
 
 bp = Blueprint("auth", __name__,url_prefix="/hogetter")
@@ -49,7 +51,7 @@ def signup():
 
 
         if confirm_get_account == None:
-            signup_db(username=username,password=password)
+            signup_db(username=username,password=generate_password_hash(password))
             return render_template("auth/auth_form.html",command = "login")
         
         flash(error)
@@ -95,7 +97,7 @@ def login():
                 return render_template("auth/auth_form.html",command = "signup")
 
 
-        if get_account(username=username)["password"] == password:
+        if check_password_hash(get_account(username=username)["password"],password):
 
             session.clear()
             session["username"] = username
