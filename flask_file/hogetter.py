@@ -18,19 +18,15 @@ def create():
     hogeet_text = request.form.get("hogeet") 
     content_file = request.files["content"]
 
-    # hogeet_textとcontent_fileをBaseとDriveに保存するためにkey（hogeet_id,content_id）を作る。
     hogeet_id = generate_hogeet_id(hogeet_text=hogeet_text)
 
     if content_file.filename != "":
         content_id = generate_content_id(hogeet_id=hogeet_id,content_name=content_file.filename,content_type=content_file.content_type)
+        put_db_drive(name=content_id,data=content_file,content_type=content_file.content_type)
     else:
         content_id = None
 
-    # 生成されたkeyを含めてBaseとDriveに保存。
     create_db_text(hogeet_text=hogeet_text, hogeet_id=hogeet_id,content_id=content_id)
-
-    if content_file.filename != "":
-        put_db_drive(name=content_id,data=content_file,content_type=content_file.content_type)
 
     return redirect(url_for("hogetter.index"))
 
