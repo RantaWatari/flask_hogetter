@@ -3,7 +3,7 @@ import datetime
 from flask import g
 from hashlib import sha256
 
-def connect_db_text():
+def connect_db_base():
     db = Deta(project_key="c0wmhhz3nbe_tc1hZ2nHqv9o6f8rrVRqpADMqxL7jtjX")
     db = db.Base(name="hogetter_text")
     return db
@@ -35,15 +35,15 @@ def generate_hogeet_id(hogeet_text:str) -> str:
     return hogeet_id
 
 
-def show_db_text_single(hogeet_id):
-    post = connect_db_text().get(hogeet_id)
+def show_db_base_single(hogeet_id):
+    post = connect_db_base().get(hogeet_id)
 
     return post
 
 
 
-def show_db_text_all():
-    db = connect_db_text()
+def show_db_base_all():
+    db = connect_db_base()
     fetch_data = db.fetch()
     
     try:  
@@ -61,9 +61,9 @@ def show_db_text_all():
     return posts
 
 
-def create_db_text(hogeet_text:str,hogeet_id:str,content_id:str):
+def create_db_base(hogeet_text:str,hogeet_id:str,content_id:str):
     
-    connect_db_text().put({
+    connect_db_base().put({
         "time":now_time(),
         "owner":g.user,
         "text":hogeet_text,
@@ -73,11 +73,11 @@ def create_db_text(hogeet_text:str,hogeet_id:str,content_id:str):
 
 
 
-def delete_db_text(hogeet_id):
-    connect_db_text().delete(hogeet_id)
+def delete_db_base(hogeet_id):
+    connect_db_base().delete(hogeet_id)
 
 
-def update_db_text(hogeet_id,hogeet_text):
-    connect_db_text().update({
+def update_db_base(hogeet_id,hogeet_text):
+    connect_db_base().update({
         "text":hogeet_text
     },key=hogeet_id)

@@ -1,6 +1,6 @@
 from flask import Blueprint,render_template,request,redirect,url_for,g,Response,stream_with_context
 from auth import login_required
-from hogetter_db_base import show_db_text_single,show_db_text_all,create_db_text,delete_db_text,update_db_text,generate_hogeet_id
+from hogetter_db_base import show_db_base_single,show_db_base_all,create_db_base,delete_db_base,update_db_base,generate_hogeet_id
 from hogetter_db_drive import generate_content_id,put_db_drive,show_db_drive
 
 bp = Blueprint("hogetter",__name__,url_prefix="/hogetter")
@@ -9,7 +9,7 @@ bp = Blueprint("hogetter",__name__,url_prefix="/hogetter")
 @login_required
 def index():
 
-    return render_template("index.html", posts = show_db_text_all(), owner = g.user)
+    return render_template("index.html", posts = show_db_base_all(), owner = g.user)
 
 
 @bp.route("/create",methods=["POST"])
@@ -26,7 +26,7 @@ def create():
     else:
         content_id = None
 
-    create_db_text(hogeet_text=hogeet_text, hogeet_id=hogeet_id,content_id=content_id)
+    create_db_base(hogeet_text=hogeet_text, hogeet_id=hogeet_id,content_id=content_id)
 
     return redirect(url_for("hogetter.index"))
 
@@ -34,7 +34,7 @@ def create():
 @bp.route("/<hogeet_id>",methods=["GET"])
 @login_required
 def hogeet_edit(hogeet_id):
-    hogeet_content = show_db_text_single(hogeet_id=hogeet_id)
+    hogeet_content = show_db_base_single(hogeet_id=hogeet_id)
     
     return render_template("hogetter/hogeet_edit.html",hogeet_content=hogeet_content)
 
@@ -43,7 +43,7 @@ def hogeet_edit(hogeet_id):
 @bp.route("/<hogeet_id>/delete",methods=["GET"])
 @login_required
 def delete(hogeet_id):
-    delete_db_text(hogeet_id=hogeet_id)
+    delete_db_base(hogeet_id=hogeet_id)
     
     return redirect(url_for("hogetter.index"))
 
@@ -53,7 +53,7 @@ def delete(hogeet_id):
 def update(hogeet_id):
     
     hogeet_text = request.form.get("hogeet_text")
-    update_db_text(hogeet_id=hogeet_id,hogeet_text=hogeet_text)
+    update_db_base(hogeet_id=hogeet_id,hogeet_text=hogeet_text)
     
     return redirect(url_for("hogetter.index"))
 
@@ -76,13 +76,6 @@ def drive_img(content_id):
         else:
 
             return Response(stream_with_context(get_content),content_type=f"image/{get_content_format}")
-
-
-
-@bp.route("/drive/<content_id>",methods=["GET"])
-@login_required
-def drive_show(content_id):
-    pass
 
 
 @bp.route("/drive/<content_id>/delete",methods=["GET"])
