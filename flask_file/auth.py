@@ -82,12 +82,28 @@ def login():
         username = request.form.get("username")
         password = request.form.get("password")
 
+        error = None        
+        if not username:
+            error = "Username is required"
+        elif not password:
+            error = "Password is required"
+        else:
+            confirm_get_account = get_account(username=username)
+            if confirm_get_account == None:
+                error = f"User {username} is not exist.Please signup."
+                flash(error)
+                return render_template("auth/auth_form.html",command = "signup")
+
+
         if get_account(username=username)["password"] == password:
 
             session.clear()
             session["username"] = username
         else:
-            pass
+            error = "Password is diffrent."
+            flash(error)
+            return render_template("auth/auth_form.html",command = "login")
+
 
         return redirect(url_for("hogetter.index"))
 
