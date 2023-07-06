@@ -68,10 +68,18 @@ def signout():
     if request.method == "POST":
         username = request.form.get("username")
         password = request.form.get("password")
-
-        signout_db(username=username)
-
-        return redirect(url_for("auth.logout"))
+        
+        error = None        
+        if not username:
+            error = "Username is required"
+        elif not password:
+            error = "Password is required"
+        else:
+            signout_db(username=username)
+            return redirect(url_for("auth.logout"))
+        
+        flash(error)
+        return redirect(url_for("auth.signout"))
 
 
 @bp.route("/login",methods=["GET","POST"])
