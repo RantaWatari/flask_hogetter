@@ -6,7 +6,6 @@ from hogetter_db_drive import generate_content_id,put_db_drive,show_db_drive
 bp = Blueprint("hogetter",__name__,url_prefix="/hogetter")
 
 @bp.route("/",methods=["GET"])
-@login_required
 def index():
 
     return render_template("index.html", posts = show_db_base_all(), owner = g.user)

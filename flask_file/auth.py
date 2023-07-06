@@ -38,10 +38,12 @@ def signup():
 
         signup_db(username=username,password=password)
 
-        return render_template("auth/auth_form.html",command ="signup")
+
+        return render_template("auth/auth_form.html",command = "login")
 
 
 @bp.route("/signout",methods=["GET","POST"])
+@login_required
 def signout():
     if request.method == "GET":
         return render_template("auth/auth_form.html",command = "signout")
@@ -52,7 +54,7 @@ def signout():
 
         signout_db(username=username)
 
-        return render_template("auth/auth_form.html",command ="signout")
+        return redirect(url_for("auth.logout"))
 
 
 @bp.route("/login",methods=["GET","POST"])
@@ -76,6 +78,7 @@ def login():
 
 
 @bp.route("/logout",methods=["GET"])
+@login_required
 def logout():
     session.clear()
 
