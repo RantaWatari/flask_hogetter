@@ -57,14 +57,13 @@ def signup():
             return render_template("auth/auth_form.html",command = "signup")
             
 
-        if get_account(username=username) == None:
-            signup_db(username=username,password=generate_password_hash(password))
-            return render_template("auth/auth_form.html",command = "login")
-        
-        else:    
+        if get_account(username=username) != None:
             flash(f"User {username} is already exist.")
             return render_template("auth/auth_form.html",command = "signup")
-
+        else:    
+            signup_db(username=username,password=generate_password_hash(password))
+            return render_template("auth/auth_form.html",command = "login")
+ 
 
 @bp.route("/signout",methods=["GET","POST"])
 @login_required
@@ -120,8 +119,7 @@ def login():
         else:
             session.clear()
             session["username"] = username
-
-        return redirect(url_for("hogetter.index"))
+            return redirect(url_for("hogetter.index"))
 
 
 @bp.route("/logout",methods=["GET"])
