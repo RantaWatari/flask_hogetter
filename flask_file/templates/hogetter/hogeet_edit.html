@@ -4,10 +4,24 @@
 <body>
     <h1>Edit</h1>
     <a href="/hogetter">HOME</a>
-    <form method="post" action="/hogetter/{{hogeet_content['key']}}/update">
+    <form method="post" action="/hogetter/{{hogeet_content['key']}}/update" enctype="multipart/form-data">
         <textarea name="hogeet_text" id="hogeet_text">{{hogeet_content["text"]}}</textarea>
+        <br>
+        <input type="file" name="content">
+        <label>Delete content?</label>
+        <input type="checkbox" name="delete_content" value="True">
+        <br>
         <input type="submit" value="update">
     </form>
+    {% if  hogeet_content["content_id"] != None %}
+        {% if hogeet_content["content_id"].split(".")[-1] != "mp4" %}
+            <img src="/hogetter/drive/{{hogeet_content['content_id']}}" width="300" height="300">
+        {% else %}
+            <video src="/hogetter/drive/{{hogeet_content['content_id']}}" width="300" height="300" controls></video>
+        {% endif %}
+    {% endif %}
+
+
     <a href="/hogetter/{{hogeet_content['key']}}/delete", onclick="return confirm('Are you sure?')">delete</a>
     
     <br>

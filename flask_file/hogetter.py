@@ -1,7 +1,7 @@
 from flask import Blueprint,render_template,request,redirect,url_for,g,Response,stream_with_context
 from auth import login_required
 from hogetter_db_base import show_db_base_single,show_db_base_all,create_db_base,delete_db_base,update_db_base,generate_hogeet_id
-from hogetter_db_drive import generate_content_id,put_db_drive,show_db_drive
+from hogetter_db_drive import generate_content_id,put_db_drive,show_db_drive,delete_db_drive
 
 bp = Blueprint("hogetter",__name__,url_prefix="/hogetter")
 
@@ -42,6 +42,10 @@ def hogeet_edit(hogeet_id):
 @bp.route("/<hogeet_id>/delete",methods=["GET"])
 @login_required
 def delete(hogeet_id):
+
+    content_id = show_db_base_single(hogeet_id=hogeet_id)["content_id"]
+    if content_id != None:
+        delete_db_drive(content_id)
     delete_db_base(hogeet_id=hogeet_id)
     
     return redirect(url_for("hogetter.index"))
@@ -50,9 +54,21 @@ def delete(hogeet_id):
 @bp.route("/<hogeet_id>/update",methods=["GET","POST"])
 @login_required
 def update(hogeet_id):
-    
     hogeet_text = request.form.get("hogeet_text")
-    update_db_base(hogeet_id=hogeet_id,hogeet_text=hogeet_text)
+    delete_content = bool(request.form.get("delete_content"))
+    content_file = request.files["content"]
+
+    content_id = show_db_base_single(hogeet_id=hogeet_id)["content_id"]
+    if content_file.filename != "":
+        if content_id != None:
+            delete_db_drive(content_id)
+        content_id = generate_content_id(hogeet_id=hogeet_id,content_name=content_file.filename,content_type=content_file.content_type)
+        put_db_drive(name=content_id,data=content_file,content_type=content_file.content_type)
+    elif delete_content == True:
+        delete_db_drive(content_id)
+        content_id = None
+
+    update_db_base(hogeet_id=hogeet_id,hogeet_text=hogeet_text,content_id=content_id)
     
     return redirect(url_for("hogetter.index"))
 

@@ -77,7 +77,8 @@ def delete_db_base(hogeet_id):
     connect_db_base().delete(hogeet_id)
 
 
-def update_db_base(hogeet_id,hogeet_text):
+def update_db_base(hogeet_id,hogeet_text,content_id):
     connect_db_base().update({
-        "text":hogeet_text
+        "text":hogeet_text,
+        "content_id":content_id
     },key=hogeet_id)

@@ -21,8 +21,10 @@ def put_db_drive(name:str,data,content_type:str):
     connect_db_drive().put(name=name,data=data,content_type=content_type)
 
 
-
 def show_db_drive(name:str):
     post = connect_db_drive().get(name)
 
     return post    
+
+def delete_db_drive(name:str):
+    connect_db_drive().delete(name)
