@@ -9,7 +9,7 @@
         <div>
         {% if owner %}
             <a href="{{ url_for('auth.logout')}}">logout</a>
-            <a href="{{ url_for('auth.signout')}}", onclick="return confirm('Are you sure?')">signout</a>
+            <a href="{{ url_for('auth.signout')}}">signout</a>
         {% else %}
             <a href="{{ url_for('auth.login')}}">login</a>
             <a href="{{ url_for('auth.signup')}}">signup</a>

@@ -37,27 +37,21 @@ def signup():
     if request.method == "POST":
         username = request.form.get("username")
         password = request.form.get("password")
-        
 
-        error = None        
-        if not username:
-            error = "Username is required"
-        elif not password:
-            error = "Password is required"
-        else:
-            confirm_get_account = get_account(username=username)
-            if confirm_get_account != None:
-                error = f"User {username} is already exist."
+        error =auth_form_check(username=username,password=password)
+        if error != None:
+            flash(error)
+            print(error)
+            return render_template("auth/auth_form.html",command = "signup")
 
-
-        if confirm_get_account == None:
+        if get_account(username=username) == None:
             signup_db(username=username,password=generate_password_hash(password))
-            return render_template("auth/auth_form.html",command = "login")
         
-        flash(error)
+        else:    
+            flash(f"User {username} is already exist.")
+            return render_template("auth/auth_form.html",command = "signup")
 
-        return render_template("auth/auth_form.html",command = "signup")
-
+        return render_template("auth/auth_form.html",command = "login")
 
 @bp.route("/signout",methods=["GET","POST"])
 @login_required
@@ -69,17 +63,25 @@ def signout():
         username = request.form.get("username")
         password = request.form.get("password")
         
-        error = None        
-        if not username:
-            error = "Username is required"
-        elif not password:
-            error = "Password is required"
+        error =auth_form_check(username=username,password=password)
+        if error != None:
+            flash(error)
+            return render_template("auth/auth_form.html",command = "signout")
+
+
+        if get_account(username=username) == None:
+            flash(f"User {username} is not exist.")
+            return render_template("auth/auth_form.html",command = "signout")
+        
+        elif check_password_hash(get_account(username=username)["password"],password) == False:    
+            flash("Password is diffrent.")
+            return render_template("auth/auth_form.html",command = "signout")
+
         else:
             signout_db(username=username)
-            return redirect(url_for("auth.logout"))
-        
-        flash(error)
-        return redirect(url_for("auth.signout"))
+ 
+       
+        return redirect(url_for("auth.logout"))
 
 
 @bp.route("/login",methods=["GET","POST"])
@@ -92,28 +94,23 @@ def login():
         username = request.form.get("username")
         password = request.form.get("password")
 
-        error = None        
-        if not username:
-            error = "Username is required"
-        elif not password:
-            error = "Password is required"
-        else:
-            confirm_get_account = get_account(username=username)
-            if confirm_get_account == None:
-                error = f"User {username} is not exist.Please signup."
-                flash(error)
-                return render_template("auth/auth_form.html",command = "signup")
-
-
-        if check_password_hash(get_account(username=username)["password"],password):
-
-            session.clear()
-            session["username"] = username
-        else:
-            error = "Password is diffrent."
+        error =auth_form_check(username=username,password=password)
+        if error != None:
             flash(error)
             return render_template("auth/auth_form.html",command = "login")
 
+       
+        if get_account(username=username) == None:
+            flash(f"User {username} is not exist.Please signup.")
+            return render_template("auth/auth_form.html",command = "signup")
+        
+        elif check_password_hash(get_account(username=username)["password"],password) == False:    
+            flash("Password is diffrent.")
+            return render_template("auth/auth_form.html",command = "login")
+
+        else:
+            session.clear()
+            session["username"] = username
 
         return redirect(url_for("hogetter.index"))
 
@@ -126,3 +123,15 @@ def logout():
     return redirect(url_for("hogetter.index"))
 
 
+def auth_form_check(username:str,password:str):
+    error = None        
+    if not username:
+        error = "Username is required"
+    elif not password:
+        error = "Password is required"
+    elif len(username) <= 0 or 25 <= len(username):
+        error = "Username is limit over"
+    elif len(password) <= 0 or 20 <= len(password):
+        error ="Password is limit over"
+    
+    return error

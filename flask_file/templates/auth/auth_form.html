@@ -9,7 +9,11 @@
         <input name="username" id="username" required>
         <label for="password">Password</label>
         <input type="password" name="password" id="password" required>
-        <input type="submit" value="{{command}}">
+        {% if command == "signout" %}
+            <input type="submit" value="{{command}}", onclick="return confirm('Are you sure?')">
+        {% else %} 
+            <input type="submit" value="{{command}}">
+        {% endif %}
     </form>
     
     {% for message in get_flashed_messages() %}
