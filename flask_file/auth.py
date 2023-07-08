@@ -29,6 +29,21 @@ def load_logged_in_user():
         g.user = username
 
 
+def auth_form_check(username:str,password:str,command):
+    error = None        
+    if not username:
+        error = "Username is required"
+    elif not password:
+        error = "Password is required"
+    elif len(username) <= 0 or 25 <= len(username):
+        error = "Username is limit over"
+    elif len(password) <= 0 or 20 <= len(password):
+        error ="Password is limit over"
+    
+    flash(error)
+    return render_template("auth/auth_form.html",command = command)
+
+
 @bp.route("/signup",methods=["GET","POST"])
 def signup():
     if request.method == "GET":
@@ -38,19 +53,16 @@ def signup():
         username = request.form.get("username")
         password = request.form.get("password")
 
-        error =auth_form_check(username=username,password=password)
-        if error != None:
-            flash(error)
-            return render_template("auth/auth_form.html",command = "signup")
+        auth_form_check(username=username,password=password,command="signup")
 
         if get_account(username=username) == None:
             signup_db(username=username,password=generate_password_hash(password))
+            return render_template("auth/auth_form.html",command = "login")
         
         else:    
             flash(f"User {username} is already exist.")
             return render_template("auth/auth_form.html",command = "signup")
 
-        return render_template("auth/auth_form.html",command = "login")
 
 @bp.route("/signout",methods=["GET","POST"])
 @login_required
@@ -62,11 +74,7 @@ def signout():
         username = request.form.get("username")
         password = request.form.get("password")
         
-        error =auth_form_check(username=username,password=password)
-        if error != None:
-            flash(error)
-            return render_template("auth/auth_form.html",command = "signout")
-
+        auth_form_check(username=username,password=password,command="signout")
 
         if get_account(username=username) == None:
             flash(f"User {username} is not exist.")
@@ -78,9 +86,7 @@ def signout():
 
         else:
             signout_db(username=username)
- 
-       
-        return redirect(url_for("auth.logout"))
+            return redirect(url_for("auth.logout"))
 
 
 @bp.route("/login",methods=["GET","POST"])
@@ -92,12 +98,8 @@ def login():
     if request.method == "POST":
         username = request.form.get("username")
         password = request.form.get("password")
-
-        error =auth_form_check(username=username,password=password)
-        if error != None:
-            flash(error)
-            return render_template("auth/auth_form.html",command = "login")
-
+        
+        auth_form_check(username=username,password=password,command="login")
        
         if get_account(username=username) == None:
             flash(f"User {username} is not exist.Please signup.")
@@ -122,15 +124,3 @@ def logout():
     return redirect(url_for("hogetter.index"))
 
 
-def auth_form_check(username:str,password:str):
-    error = None        
-    if not username:
-        error = "Username is required"
-    elif not password:
-        error = "Password is required"
-    elif len(username) <= 0 or 25 <= len(username):
-        error = "Username is limit over"
-    elif len(password) <= 0 or 20 <= len(password):
-        error ="Password is limit over"
-    
-    return error
