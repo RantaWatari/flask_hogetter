@@ -41,7 +41,6 @@ def signup():
         error =auth_form_check(username=username,password=password)
         if error != None:
             flash(error)
-            print(error)
             return render_template("auth/auth_form.html",command = "signup")
 
         if get_account(username=username) == None:
