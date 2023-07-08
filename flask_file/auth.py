@@ -29,7 +29,7 @@ def load_logged_in_user():
         g.user = username
 
 
-def auth_form_check(username:str,password:str,command):
+def auth_form_check(username:str,password:str):
     error = None        
     if not username:
         error = "Username is required"
@@ -40,9 +40,7 @@ def auth_form_check(username:str,password:str,command):
     elif len(password) <= 0 or 20 <= len(password):
         error ="Password is limit over"
     
-    flash(error)
-    return render_template("auth/auth_form.html",command = command)
-
+    return error
 
 @bp.route("/signup",methods=["GET","POST"])
 def signup():
@@ -53,7 +51,11 @@ def signup():
         username = request.form.get("username")
         password = request.form.get("password")
 
-        auth_form_check(username=username,password=password,command="signup")
+        error = auth_form_check(username=username,password=password)
+        if error != None:
+            flash(error)
+            return render_template("auth/auth_form.html",command = "signup")
+            
 
         if get_account(username=username) == None:
             signup_db(username=username,password=generate_password_hash(password))
@@ -74,7 +76,10 @@ def signout():
         username = request.form.get("username")
         password = request.form.get("password")
         
-        auth_form_check(username=username,password=password,command="signout")
+        error = auth_form_check(username=username,password=password)
+        if error != None:
+            flash(error)
+            return render_template("auth/auth_form.html",command = "signout")
 
         if get_account(username=username) == None:
             flash(f"User {username} is not exist.")
@@ -98,8 +103,11 @@ def login():
     if request.method == "POST":
         username = request.form.get("username")
         password = request.form.get("password")
-        
-        auth_form_check(username=username,password=password,command="login")
+
+        error = auth_form_check(username=username,password=password)
+        if error != None:
+            flash(error)
+            return render_template("auth/auth_form.html",command = "login")       
        
         if get_account(username=username) == None:
             flash(f"User {username} is not exist.Please signup.")
