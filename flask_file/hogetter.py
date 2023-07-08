@@ -59,15 +59,15 @@ def update(hogeet_id):
     content_file = request.files["content"]
 
     content_id = show_db_base_single(hogeet_id=hogeet_id)["content_id"]
-    if content_file.filename != "":
+    if delete_content == True:
+        delete_db_drive(content_id)
+        content_id = None
+    elif content_file.filename != "":
         if content_id != None:
             delete_db_drive(content_id)
         content_id = generate_content_id(hogeet_id=hogeet_id,content_name=content_file.filename,content_type=content_file.content_type)
         put_db_drive(name=content_id,data=content_file,content_type=content_file.content_type)
-    elif delete_content == True:
-        delete_db_drive(content_id)
-        content_id = None
-
+ 
     update_db_base(hogeet_id=hogeet_id,hogeet_text=hogeet_text,content_id=content_id)
     
     return redirect(url_for("hogetter.index"))
