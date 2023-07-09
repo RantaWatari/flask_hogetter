@@ -45,51 +45,51 @@ def auth_form_check(username:str,password:str):
 @bp.route("/signup",methods=["GET","POST"])
 def signup():
     if request.method == "GET":
-        return render_template("auth/auth_form.html",command = "signup")
+        return render_template("auth/auth_form.html", command="signup")
 
     if request.method == "POST":
         username = request.form.get("username")
         password = request.form.get("password")
 
-        error = auth_form_check(username=username,password=password)
+        error = auth_form_check(username, password)
         if error != None:
             flash(error)
-            return render_template("auth/auth_form.html",command = "signup")
+            return render_template("auth/auth_form.html", command="signup")
             
 
         if get_account(username=username) != None:
             flash(f"User {username} is already exist.")
-            return render_template("auth/auth_form.html",command = "signup")
+            return render_template("auth/auth_form.html", command="signup")
         else:    
-            signup_db(username=username,password=generate_password_hash(password))
-            return render_template("auth/auth_form.html",command = "login")
+            signup_db(username, generate_password_hash(password))
+            return render_template("auth/auth_form.html", command="login")
  
 
 @bp.route("/signout",methods=["GET","POST"])
 @login_required
 def signout():
     if request.method == "GET":
-        return render_template("auth/auth_form.html",command = "signout")
+        return render_template("auth/auth_form.html", command="signout")
 
     if request.method == "POST":
         username = request.form.get("username")
         password = request.form.get("password")
         
-        error = auth_form_check(username=username,password=password)
+        error = auth_form_check(username, password)
         if error != None:
             flash(error)
-            return render_template("auth/auth_form.html",command = "signout")
+            return render_template("auth/auth_form.html", command="signout")
 
-        if get_account(username=username) == None:
+        if get_account(username) == None:
             flash(f"User {username} is not exist.")
-            return render_template("auth/auth_form.html",command = "signout")
+            return render_template("auth/auth_form.html", command="signout")
         
-        elif check_password_hash(get_account(username=username)["password"],password) == False:    
+        elif check_password_hash(get_account(username)["password"], password) == False:    
             flash("Password is diffrent.")
-            return render_template("auth/auth_form.html",command = "signout")
+            return render_template("auth/auth_form.html", command="signout")
 
         else:
-            signout_db(username=username)
+            signout_db(username)
             return redirect(url_for("auth.logout"))
 
 
@@ -97,24 +97,24 @@ def signout():
 def login():
 
     if request.method == "GET":
-        return render_template("auth/auth_form.html",command = "login")
+        return render_template("auth/auth_form.html", command="login")
     
     if request.method == "POST":
         username = request.form.get("username")
         password = request.form.get("password")
 
-        error = auth_form_check(username=username,password=password)
+        error = auth_form_check(username, password)
         if error != None:
             flash(error)
-            return render_template("auth/auth_form.html",command = "login")       
+            return render_template("auth/auth_form.html", command="login")       
        
-        if get_account(username=username) == None:
+        if get_account(username) == None:
             flash(f"User {username} is not exist.Please signup.")
-            return render_template("auth/auth_form.html",command = "signup")
+            return render_template("auth/auth_form.html", command="signup")
         
-        elif check_password_hash(get_account(username=username)["password"],password) == False:    
+        elif check_password_hash(get_account(username)["password"], password) == False:    
             flash("Password is diffrent.")
-            return render_template("auth/auth_form.html",command = "login")
+            return render_template("auth/auth_form.html", command="login")
 
         else:
             session.clear()

@@ -17,15 +17,15 @@ def create():
     hogeet_text = request.form.get("hogeet") 
     content_file = request.files["content"]
 
-    hogeet_id = generate_hogeet_id(hogeet_text=hogeet_text)
+    hogeet_id = generate_hogeet_id(hogeet_text)
 
     if content_file.filename != "":
-        content_id = generate_content_id(hogeet_id=hogeet_id,content_name=content_file.filename,content_type=content_file.content_type)
-        put_db_drive(name=content_id,data=content_file,content_type=content_file.content_type)
+        content_id = generate_content_id(hogeet_id, content_file.filename, content_file.content_type)
+        put_db_drive(content_id, content_file, content_file.content_type)
     else:
         content_id = None
 
-    create_db_base(hogeet_text=hogeet_text, hogeet_id=hogeet_id,content_id=content_id)
+    create_db_base(hogeet_text, hogeet_id, content_id)
 
     return redirect(url_for("hogetter.index"))
 
@@ -33,9 +33,9 @@ def create():
 @bp.route("/<hogeet_id>",methods=["GET"])
 @login_required
 def hogeet_edit(hogeet_id):
-    hogeet_content = show_db_base_single(hogeet_id=hogeet_id)
+    hogeet_content = show_db_base_single(hogeet_id)
     
-    return render_template("hogetter/hogeet_edit.html",hogeet_content=hogeet_content)
+    return render_template("hogetter/hogeet_edit.html", post=hogeet_content)
 
 
 
@@ -43,10 +43,10 @@ def hogeet_edit(hogeet_id):
 @login_required
 def delete(hogeet_id):
 
-    content_id = show_db_base_single(hogeet_id=hogeet_id)["content_id"]
+    content_id = show_db_base_single(hogeet_id)["content_id"]
     if content_id != None:
         delete_db_drive(content_id)
-    delete_db_base(hogeet_id=hogeet_id)
+    delete_db_base(hogeet_id)
     
     return redirect(url_for("hogetter.index"))
 
@@ -58,17 +58,21 @@ def update(hogeet_id):
     delete_content = bool(request.form.get("delete_content"))
     content_file = request.files["content"]
 
-    content_id = show_db_base_single(hogeet_id=hogeet_id)["content_id"]
-    if delete_content == True:
+    content_id = show_db_base_single(hogeet_id)["content_id"]
+
+    if delete_content == True and content_id != None:
         delete_db_drive(content_id)
         content_id = None
+
     elif content_file.filename != "":
+
         if content_id != None:
             delete_db_drive(content_id)
-        content_id = generate_content_id(hogeet_id=hogeet_id,content_name=content_file.filename,content_type=content_file.content_type)
-        put_db_drive(name=content_id,data=content_file,content_type=content_file.content_type)
+        
+        content_id = generate_content_id(hogeet_id, content_file.filename, content_file.content_type)
+        put_db_drive(content_id, content_file, content_file.content_type)
  
-    update_db_base(hogeet_id=hogeet_id,hogeet_text=hogeet_text,content_id=content_id)
+    update_db_base(hogeet_id, hogeet_text, content_id)
     
     return redirect(url_for("hogetter.index"))
 
@@ -85,13 +89,13 @@ def drive_img(content_id):
         get_content_format = content_id.split(".")[-1]
         get_content = get_content.iter_chunks()
         
-        if get_content_format in ["mp4"]:
+        if get_content_format in ["mp4","webm"]:
                         
             return Response(stream_with_context(get_content),content_type=f"video/{get_content_format}")
-        else:
-
+        elif get_content_format in ["jpeg","png","gif"]:
             return Response(stream_with_context(get_content),content_type=f"image/{get_content_format}")
-
+        else:
+            return Response(stream_with_context(get_content),content_type=f"audio/{get_content_format}")
 
 @bp.route("/drive/<content_id>/delete",methods=["GET"])
 @login_required
