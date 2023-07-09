@@ -38,7 +38,7 @@ header .left a{
 }
 
 header .center{
-    display: flex;
+    display: auto;
 }
 
 header .right{
@@ -46,3 +46,6 @@ header .right{
     padding: 5px;
 }
 
+/* fodter */
+footer{
+}
