@@ -1,12 +1,12 @@
 {% extends 'base.html' %}
 
-{% block content %}
-<body>
-    <h1>HOGETTER HOME</h1>
-    {% if owner %}
-        <h3>Welcome {{owner}}</h3>
-    {% endif %}
-        <div>
+{% block head%}
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/index.css')}}"  type="text/css" media="screen" />
+    <title>HOGETTR</title>
+{% endblock %}
+
+{% block header%}
+    <div class="right">
         {% if owner %}
             <a href="{{ url_for('auth.logout')}}">logout</a>
             <a href="{{ url_for('auth.signout')}}">signout</a>
@@ -15,7 +15,14 @@
             <a href="{{ url_for('auth.signup')}}">signup</a>
         {% endif %}
     </div>
-    <div>
+{% endblock %}
+
+
+{% block body %}
+    {% if owner %}
+        <h3>Welcome {{owner}}</h3>
+    {% endif %}
+   <div>
         {% if owner %}
             <form method="post" action="/hogetter/create" enctype="multipart/form-data">
                 <textarea name="hogeet" id="hogeet"></textarea>
@@ -49,9 +56,8 @@
         </ul>
     </div>
 
-{% for post in posts %}
-    {{post}}<br>
-{% endfor %}
+    {% for post in posts %}
+        {{post}}<br>
+    {% endfor %}
 
-</body>
 {% endblock %}

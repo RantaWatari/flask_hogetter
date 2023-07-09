@@ -1,7 +1,26 @@
 <!DOCTYPE html>
-<section class="content">
+<html lang="ja">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link rel="stylesheet" href="{{ url_for('static',filename='css/base.css')}}"  type="text/css" media="screen" />
+  {% block head %}{% endblock %}
+</head>
+
+<body>
   <header>
+    <section class="header_section">
+      <div class="left">
+        <a href="/hogetter/">HOGETTER HOME</a>
+      </div>
+      <div class="center">
+      </div>
     {% block header %}{% endblock %}
+    </section>
   </header>
-  {% block content %}{% endblock %}
-</section>
+
+  {% block body %}
+  {% endblock %}
+</body>
+
+</html>

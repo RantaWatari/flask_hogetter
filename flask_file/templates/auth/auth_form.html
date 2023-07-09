@@ -1,28 +1,25 @@
 {% extends 'base.html' %}
 
-{% block content %}
-<body>
-    <a href="/hogetter/"><h1>HOGETTER HOME</h1></a>
-    <h3>{{command.upper()}}</h3>
-    <form method="post" action="/hogetter/{{command}}">
-        <label for="username">Username</label>
-        <input name="username" id="username" required>
-        <label for="password">Password</label>
-        <input type="password" name="password" id="password" required>
-        {% if command == "signout" %}
-            <input type="submit" value="{{command}}", onclick="return confirm('Are you sure?')">
-        {% else %} 
-            <input type="submit" value="{{command}}">
-        {% endif %}
-    </form>
-    
-    {% for message in get_flashed_messages() %}
-        <br>
-        <h4>Error Message</h4>
-        <div class="flash">{{ message }}</div>
-    {% endfor %}
- 
+{% block body %}
+<h3>{{command.upper()}}</h3>
+<form method="post" action="/hogetter/{{command}}">
+    <label for="username">Username</label>
+    <input name="username" id="username" required>
+    <label for="password">Password</label>
+    <input type="password" name="password" id="password" required>
+    {% if command == "signout" %}
+        <input type="submit" value="{{command}}", onclick="return confirm('Are you sure?')">
+    {% else %} 
+        <input type="submit" value="{{command}}">
+    {% endif %}
+</form>
 
-</body>
+{% for message in get_flashed_messages() %}
+    <br>
+    <h4>Error Message</h4>
+    <div class="flash">{{ message }}</div>
+{% endfor %}
+
+
 
 {% endblock %}

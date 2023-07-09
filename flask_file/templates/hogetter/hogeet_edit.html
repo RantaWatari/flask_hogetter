@@ -1,34 +1,31 @@
 {% extends 'base.html' %}
 
-{% block content %}
-<body>
-    <h1>Edit</h1>
-    <a href="/hogetter">HOME</a>
-    <form method="post" action="/hogetter/{{post['key']}}/update" enctype="multipart/form-data">
-        <textarea name="hogeet_text" id="hogeet_text">{{post["text"]}}</textarea>
-        <br>
-        <input type="file" name="content">
-        <label id="delete_check">Delete content?</label>
-        <input type="checkbox" id="delete_check" name="delete_content" value="True">
-        <br>
-        <input type="submit" value="update">
-    </form>
-    {% if  post["content_id"] != None %}
-        {% if post["content_id"].split(".")[-1] in ["jpeg","png","gif"] %}
-            <img src="/hogetter/drive/{{post['content_id']}}" width="300" height="300" decoding="async">
-        {% elif post["content_id"].split(".")[-1] in ["mpeg","mp3"] %}
-            <audio src="/hogetter/drive/{{post['content_id']}}" controls preload="metadata"></audio>
-        {% else %}
-            <video src="/hogetter/drive/{{post['content_id']}}" width="300" height="300" controls preload="metadata"></video>
-        {% endif %}
-    {% endif %}
-
-
-    <a href="/hogetter/{{post['key']}}/delete", onclick="return confirm('Are you sure?')">delete</a>
-    
+{% block body %}
+<h1>Edit</h1>
+<form method="post" action="/hogetter/{{post['key']}}/update" enctype="multipart/form-data">
+    <textarea name="hogeet_text" id="hogeet_text">{{post["text"]}}</textarea>
     <br>
-    {{post}}
+    <input type="file" name="content">
+    <label id="delete_check">Delete content?</label>
+    <input type="checkbox" id="delete_check" name="delete_content" value="True">
+    <br>
+    <input type="submit" value="update">
+</form>
+{% if  post["content_id"] != None %}
+    {% if post["content_id"].split(".")[-1] in ["jpeg","png","gif"] %}
+        <img src="/hogetter/drive/{{post['content_id']}}" width="300" height="300" decoding="async">
+    {% elif post["content_id"].split(".")[-1] in ["mpeg","mp3"] %}
+        <audio src="/hogetter/drive/{{post['content_id']}}" controls preload="metadata"></audio>
+    {% else %}
+        <video src="/hogetter/drive/{{post['content_id']}}" width="300" height="300" controls preload="metadata"></video>
+    {% endif %}
+{% endif %}
 
-</body>
+
+<a href="/hogetter/{{post['key']}}/delete", onclick="return confirm('Are you sure?')">delete</a>
+
+<br>
+{{post}}
+
 
 {% endblock %}
