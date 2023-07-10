@@ -30,3 +30,19 @@ body .content_section .content_section_center{
     text-align: center;
 }
 
+body .content_section_center_form textarea{
+    resize:none;
+    width: 100%;
+    height: 100px;
+}
+
+body .content_section_center_hogeet_list{
+}
+
+body .content_section_center_hogeet{
+    margin-top: 50px;
+    margin-bottom: 50px;
+    padding-bottom: 50px;
+    border-bottom: 1px solid;
+}
+

@@ -8,6 +8,7 @@
 {% block header%}
     <div class="right">
         {% if owner %}
+            <h3>{{owner}}</h3> 
             <a href="{{ url_for('auth.logout')}}">logout</a>
             <a href="{{ url_for('auth.signout')}}">signout</a>
         {% else %}
@@ -22,13 +23,12 @@
     <section class="content_section">
         <section class="content_section_left"></section>
         <section class="content_section_center">
-            {% if owner %}
-                <h3>Welcome {{owner}}</h3>
-            {% endif %}
-            <div>
+            <h1>HOGETTER HOME</h1>
+           <div class="content_section_center_form">
                 {% if owner %}
                     <form method="post" action="/hogetter/create" enctype="multipart/form-data">
                         <textarea name="hogeet" id="hogeet"></textarea>
+                        <br>
                         <input type="file" name="content">
                         <input type="submit" value="hogeet">
                     </form>
@@ -36,25 +36,27 @@
                     <h4>Please login if want to hogeet or edit.</h4>
                 {% endif %}
             </div>
-            <div>
+            <div class="content_section_center_hogeet_list">
                 <ul type="None">
                     {% for post in posts %}
-                        <li>{{post["time"][0]}}/{{post["time"][1]}}/{{post["time"][2]}} {{post["time"][3]}}:{{post["time"][4]}}:{{post["time"][5]}} | {{post["text"]}} :: {{post["owner"]}}
-                        
-                        {% if owner == post["owner"]: %}
-                            <a href="/hogetter/{{post['key']}}">Edit</a>
-                        {% endif %}
-                        </li>
-
-                        {% if  post["content_id"] != None %}
-                            {% if post["content_id"].split(".")[-1] in ["jpeg","png","gif"] %}
-                                <img src="/hogetter/drive/{{post['content_id']}}" width="300" height="300" decoding="async">
-                            {% elif post["content_id"].split(".")[-1] in ["mpeg","mp3"] %}
-                                <audio src="/hogetter/drive/{{post['content_id']}}" controls preload="metadata"></audio>
-                            {% else %}
-                                <video src="/hogetter/drive/{{post['content_id']}}" width="300" height="300" controls preload="metadata"></video>
+                        <div class="content_section_center_hogeet">
+                            <li>
+                            {{post["time"][0]}}/{{post["time"][1]}}/{{post["time"][2]}} {{post["time"][3]}}:{{post["time"][4]}}:{{post["time"][5]}} | {{post["text"]}} :: {{post["owner"]}} 
+                            {% if owner == post["owner"]: %}
+                                <a href="/hogetter/{{post['key']}}">Edit</a>
                             {% endif %}
-                        {% endif %}
+                            </li>
+
+                            {% if  post["content_id"] != None %}
+                                {% if post["content_id"].split(".")[-1] in ["jpeg","png","gif"] %}
+                                    <img src="/hogetter/drive/{{post['content_id']}}" width="300" height="300" decoding="async">
+                                {% elif post["content_id"].split(".")[-1] in ["mpeg","mp3"] %}
+                                    <audio src="/hogetter/drive/{{post['content_id']}}" controls preload="metadata"></audio>
+                                {% else %}
+                                    <video src="/hogetter/drive/{{post['content_id']}}" width="300" height="300" controls preload="metadata"></video>
+                                {% endif %}
+                            {% endif %}
+                        </div>
                     {% endfor %}
                 </ul>
             </div>
