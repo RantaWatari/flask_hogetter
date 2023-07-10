@@ -13,23 +13,20 @@ body .content_section .content_section_left{
 	background-position: center;
 	text-align:center;
     background-position:cover;
+    background-size: cover;
     background-repeat: no-repeat;
     width: auto;
-}
-
-body .content_section .content_section_left{
-
-	background-size: cover;
 }
 
 
 
 body .content_section .content_section_center{
     overflow: auto;
-   flex:3;
-   display:flex;
-   flex-direction: column;
-   align-items: center;
-   justify-content: center;
+    flex:3;
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
 }
 
