@@ -49,7 +49,7 @@
 
                             {% if  post["content_id"] != None %}
                                 {% if post["content_id"].split(".")[-1] in ["jpeg","png","gif"] %}
-                                    <img src="/hogetter/drive/{{post['content_id']}}" width="300" height="300" decoding="async">
+                                    <img src="/hogetter/drive/{{post['content_id']}}" width="300" height="300" decoding="async" loading="lazy">
                                 {% elif post["content_id"].split(".")[-1] in ["mpeg","mp3"] %}
                                     <audio src="/hogetter/drive/{{post['content_id']}}" controls preload="metadata"></audio>
                                 {% else %}
