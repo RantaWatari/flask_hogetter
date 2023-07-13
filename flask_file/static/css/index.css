@@ -14,7 +14,6 @@ body .content_section{
 body .content_section .content_section_center{
     background-color: rgba(220, 163, 88, 0.775);
     overflow: auto;
-    flex:2;
     display:flex;
     flex-direction: column;
     align-items: center;
@@ -28,7 +27,8 @@ body .content_section_center_form textarea{
     height: 100px;
 }
 
-body .content_section_center_hogeet_list{
+body .content_section_center_hogeet_list ul{
+    padding-inline-start: 0px;
 }
 
 body .content_section_center_hogeet{
@@ -48,16 +48,16 @@ body .content_section_center_hogeet{
 
 @media screen and (min-width: 786px){
 
-body .content_section{
-    display: flex;
-}
+    body .content_section{
+        display: flex;
+    }
 
-body .content_section section{
-    flex: 1; 
-}
-body .content_section .content_section_center{
-    flex: 3;
-} 
+    body .content_section section{
+        flex: 1; 
+    }
+    body .content_section .content_section_center{
+        flex: 3;
+    } 
 
 
 }
