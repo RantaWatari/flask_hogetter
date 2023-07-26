@@ -55,12 +55,12 @@ def delete(hogeet_id):
 @login_required
 def update(hogeet_id):
     hogeet_text = request.form.get("hogeet_text")
-    delete_content = bool(request.form.get("delete_content"))
+    delete_action = bool(request.form.get("delete_content"))
     content_file = request.files["content"]
 
     content_id = show_db_base_single(hogeet_id)["content_id"]
 
-    if delete_content == True and content_id != None:
+    if delete_action == True and content_id != None:
         delete_db_drive(content_id)
         content_id = None
 

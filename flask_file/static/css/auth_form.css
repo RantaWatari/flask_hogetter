@@ -1,0 +1,27 @@
+body .auth_form{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+
+}
+
+body .content{
+    text-align: center;
+   
+}
+
+.form_content form{
+
+    text-align: left;
+}
+form .form_content_submit{
+    text-align: right;
+}
+
+
+.flash_message{
+
+    text-align: left;
+}
