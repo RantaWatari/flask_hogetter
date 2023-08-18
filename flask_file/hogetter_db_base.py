@@ -41,6 +41,26 @@ def show_db_base_single(hogeet_id):
     return post
 
 
+def sort(posts_unsorted): 
+    posts_copy = posts_unsorted.copy()
+    sort_p = {}
+    for i in range(len(posts_unsorted)):
+        bind_time = ""
+        for j in posts_unsorted[i]["time"]:
+            bind_time = bind_time + str(j)
+        sort_p[int(bind_time)] = posts_unsorted[i]["key"]
+    
+    sort_in = sorted(sort_p,reverse=True)
+    sorted_index = [sort_p[i] for i in sort_in]
+
+    posts_sorted = []
+    for i in sorted_index:
+        for j in posts_copy:
+            if j["key"] == i: posts_sorted.append(j)
+
+    return posts_sorted
+
+
 
 def show_db_base_all():
     db = connect_db_base()
@@ -57,6 +77,9 @@ def show_db_base_all():
     except TypeError:
         ## Usefull Only local enviroment
         posts = fetch_data.items
+
+
+    posts = sort(posts)
 
     return posts
 
