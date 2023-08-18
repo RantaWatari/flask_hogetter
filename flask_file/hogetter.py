@@ -97,8 +97,3 @@ def drive_img(content_id):
         else:
             return Response(stream_with_context(get_content),content_type=f"audio/{get_content_format}")
 
-@bp.route("/drive/<content_id>/delete",methods=["GET"])
-@login_required
-def drive_delete(content_id):
-    pass
-
