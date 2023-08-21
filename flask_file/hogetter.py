@@ -54,7 +54,7 @@ def delete(hogeet_id):
     return redirect(url_for("hogetter.index"))
 
 
-@bp.route("/<hogeet_id>/update",methods=["GET","POST"])
+@bp.route("/<hogeet_id>/update",methods=["POST"])
 @login_required
 def update(hogeet_id):
     hogeet_text = request.form.get("hogeet_text")
