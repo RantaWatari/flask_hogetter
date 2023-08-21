@@ -1,4 +1,4 @@
-from flask import Blueprint,render_template,request,redirect,url_for,g,Response,stream_with_context
+from flask import Blueprint,render_template,request,redirect,url_for,g,Response,stream_with_context,session
 from auth import login_required
 from hogetter_db_base import show_db_base_single,show_db_base_all,create_db_base,delete_db_base,update_db_base,generate_hogeet_id
 from hogetter_db_drive import generate_content_id,put_db_drive,show_db_drive,delete_db_drive
@@ -7,6 +7,9 @@ bp = Blueprint("hogetter",__name__,url_prefix="/hogetter")
 
 @bp.route("/",methods=["GET"])
 def index():
+    print(request.headers)
+    print(session)
+#    print(request.headers["Cookie"].split(" ")[2])
 
     return render_template("index.html", posts = show_db_base_all(), owner = g.user)
 
@@ -87,13 +90,13 @@ def drive_img(content_id):
         get_content = show_db_drive(content_id)
 
         get_content_format = content_id.split(".")[-1]
-        get_content = get_content.iter_chunks()
+        get_content_cunks = get_content.iter_chunks()
         
         if get_content_format in ["mp4","webm"]:
-                        
-            return Response(stream_with_context(get_content),content_type=f"video/{get_content_format}")
+            content_type = "video"
         elif get_content_format in ["jpeg","png","gif"]:
-            return Response(stream_with_context(get_content),content_type=f"image/{get_content_format}")
+            content_type = "img"
         else:
-            return Response(stream_with_context(get_content),content_type=f"audio/{get_content_format}")
+            content_type = "audio"
 
+        return Response(stream_with_context(get_content_cunks),content_type=f"{content_type}/{get_content_format}")
