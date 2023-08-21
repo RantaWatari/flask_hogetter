@@ -93,10 +93,10 @@ def drive_img(content_id):
         get_content_cunks = get_content.iter_chunks()
         
         if get_content_format in ["mp4","webm"]:
-            content_type = "video"
+            media_type = "video"
         elif get_content_format in ["jpeg","png","gif"]:
-            content_type = "img"
+            media_type = "img"
         else:
-            content_type = "audio"
+            media_type = "audio"
 
-        return Response(stream_with_context(get_content_cunks),content_type=f"{content_type}/{get_content_format}")
+        return Response(stream_with_context(get_content_cunks),content_type=f"{media_type}/{get_content_format}")
