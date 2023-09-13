@@ -46,7 +46,6 @@
                                 <a href="/hogetter/{{post['key']}}">Edit</a>
                             {% endif %}
                             </li>
-
                             {% if  post["content_id"] != None %}
                                 {% if post["content_id"].split(".")[-1] in ["jpeg","png","gif"] %}
                                     <img src="/hogetter/drive/{{post['content_id']}}" width="300" height="300" decoding="async" loading="lazy">

@@ -1,6 +1,7 @@
 from deta import Deta
 from flask import g
 from hashlib import sha256
+from werkzeug.datastructures import FileStorage
 
 def connect_db_drive():
     db = Deta(project_key="c0wmhhz3nbe_aT8g675zLGZKhcfQKzvn7CaBTU6oqSjg")
@@ -17,7 +18,7 @@ def generate_content_id(hogeet_id:str,content_name:str,content_type:str) -> str:
 
 
 
-def put_db_drive(name:str,data,content_type:str):
+def put_db_drive(name:str,data:FileStorage,content_type:str):
     connect_db_drive().put(name=name,data=data,content_type=content_type)
 
 

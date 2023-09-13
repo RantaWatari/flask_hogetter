@@ -42,6 +42,11 @@ def show_db_base_single(hogeet_id):
 
 
 def sort(posts_unsorted): 
+    '''
+        Sort the list by latest time.\n
+        Argument will sorted by binded post[i]["time"].
+    ''' 
+
     posts_copy = posts_unsorted.copy()
     sort_p = {}
     for i in range(len(posts_unsorted)):
@@ -96,11 +101,11 @@ def create_db_base(hogeet_text:str,hogeet_id:str,content_id:str):
 
 
 
-def delete_db_base(hogeet_id):
+def delete_db_base(hogeet_id:str):
     connect_db_base().delete(hogeet_id)
 
 
-def update_db_base(hogeet_id,hogeet_text,content_id):
+def update_db_base(hogeet_id:str,hogeet_text:str,content_id:str):
     connect_db_base().update({
         "text":hogeet_text,
         "content_id":content_id
