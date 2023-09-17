@@ -9,6 +9,9 @@ def connect_db_base():
     return db
 
 
+# 17/9/2023
+# Currently the sort() process is too verbose.
+# I want to change the code to convert time into one string without dividing it.
 def now_time():
     now_time = datetime.datetime.now(datetime.timezone(datetime.timedelta(hours=9))) 
     now_time_tuple = now_time.timetuple()
@@ -45,6 +48,7 @@ def sort(posts_unsorted):
     '''
         Sort the list by latest time.\n
         Argument will sorted by binded post[i]["time"].
+        Too verbose code.
     ''' 
 
     posts_copy = posts_unsorted.copy()
