@@ -5,7 +5,7 @@ micros:
     src: ./flask_file
     engine: python3.9
     primary: true
-    run: flask --app main.py run
+    run: gunicorn main:app
     dev: flask --app main.py run -h 127.0.0.1 -p 4200
 
 
