@@ -47,7 +47,7 @@ def show_db_base_single(hogeet_id):
 def sort(posts_unsorted): 
     '''
         Sort the list by latest time.\n
-        Argument will sorted by binded post[i]["time"].
+        Argument will sorted by binded post[i]["time"].\n
         Too verbose code.
     ''' 
 
