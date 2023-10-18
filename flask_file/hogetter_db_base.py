@@ -12,6 +12,25 @@ def connect_db_base():
 # 17/9/2023
 # Currently the sort() process is too verbose.
 # I want to change the code to convert time into one string without dividing it.
+""" 
+def now_time():
+    now_time = datetime.datetime.now(datetime.timezone(datetime.timedelta(hours=9))) 
+    now_time_tuple = now_time.timetuple()
+    now = ""
+    
+    for i in range(len(now_time_tuple[:6])):
+        time = str(now_time_tuple[i])
+        if i == 0 :
+            time = time.zfill(4)
+        else:
+            time = time.zfill(2)
+        now = now + time
+    # year~microsecond 
+    time = (str(now_time.microsecond))
+    now = now + time.zfill(6)
+    return now
+
+ """
 def now_time():
     now_time = datetime.datetime.now(datetime.timezone(datetime.timedelta(hours=9))) 
     now_time_tuple = now_time.timetuple()
@@ -30,6 +49,8 @@ def now_time():
     return now
 
 
+
+
 def generate_hogeet_id(hogeet_text:str) -> str:
 
     pre_new_id = f"{g.user} + {now_time()} + {hogeet_text}".encode("utf-8")
@@ -44,7 +65,7 @@ def show_db_base_single(hogeet_id):
     return post
 
 
-def sort(posts_unsorted): 
+def sort_hogeetList(posts_unsorted): 
     '''
         Sort the list by latest time.\n
         Argument will sorted by binded post[i]["time"].\n
@@ -70,6 +91,12 @@ def sort(posts_unsorted):
     return posts_sorted
 
 
+""" 
+def sort_hogeetList(unsortedHogeetList):
+        sorted_List = sorted()
+    return sorted_list
+
+ """
 
 def show_db_base_all():
     db = connect_db_base()
@@ -88,7 +115,7 @@ def show_db_base_all():
         posts = fetch_data.items
 
 
-    posts = sort(posts)
+    posts = sort_hogeetList(posts)
 
     return posts
 
