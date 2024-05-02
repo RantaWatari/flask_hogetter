@@ -1,12 +1,10 @@
 import pytest
-#import sys
-#print(sys.path)
 
-from ..flask_file import app as hogetter
+from flask_file import create_app
 
 @pytest.fixture()
 def app():
-    app = hogetter
+    app = create_app()
     app.config.update({
         "TESTING": True,
     })

@@ -1,6 +1,6 @@
 from flask import Blueprint,render_template,request,session,redirect,url_for,g,flash
 import functools
-from auth_db import signup_db,signout_db,get_account
+from flask_file.auth_db import signup_db,signout_db,get_account
 from werkzeug.security import check_password_hash
 from werkzeug.security import generate_password_hash
 

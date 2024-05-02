@@ -1,7 +1,7 @@
 from flask import Blueprint,render_template,request,redirect,url_for,g,Response,stream_with_context,session
-from auth import login_required
-from hogetter_db_base import show_db_base_single,show_db_base_all,create_db_base,delete_db_base,update_db_base,generate_hogeet_id
-from hogetter_db_drive import generate_content_id,put_db_drive,show_db_drive,delete_db_drive
+from flask_file.auth import login_required
+from flask_file.hogetter_db_base import show_db_base_single,show_db_base_all,create_db_base,delete_db_base,update_db_base,generate_hogeet_id
+from flask_file.hogetter_db_drive import generate_content_id,put_db_drive,show_db_drive,delete_db_drive
 
 bp = Blueprint("hogetter",__name__,url_prefix="/hogetter")
 

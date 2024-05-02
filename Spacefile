@@ -2,11 +2,11 @@
 v: 0
 micros:
   - name: flask-file
-    src: ./flask_file
+    src: .
     engine: python3.9
     primary: true
-    run: gunicorn main:app
-    dev: flask --app main.py run -h 127.0.0.1 -p 4200
+    run: gunicorn flask_file:app
+    dev: flask --app flask_file run -h 127.0.0.1 -p 4200
 
 
     public_routes:
