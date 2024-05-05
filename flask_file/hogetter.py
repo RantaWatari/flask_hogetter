@@ -7,9 +7,9 @@ bp = Blueprint("hogetter",__name__,url_prefix="/hogetter")
 
 @bp.route("/",methods=["GET"])
 def index():
-    print(request.headers)
-    print(session)
-#    print(request.headers["Cookie"].split(" ")[2])
+    #print(request.headers)
+    #print(session)
+    #print(request.headers["Cookie"].split(" ")[2])
 
     return render_template("index.html", posts = show_db_base_all(), owner = g.user)
 

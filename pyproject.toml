@@ -1,0 +1,38 @@
+[project]
+name = "Flask_HOGETTER"
+version = "1.0.0"
+description = ""
+readme = "README.md"
+dependencies = [
+    "flask",
+    "deta"
+]
+
+[project.urls]
+Documentation = "https://github.com/RantaWatari/flask_hogetter.git"
+
+[project.optional-dependencies]
+test = ["pytest"]
+
+#[build-system]
+#requires = ["flit_core<4"]
+#build-backend = "flit_core.buildapi"
+
+[tool.flit.module]
+name = "flask_file"
+
+[tool.flit.sdist]
+include = [
+    "tests/",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+filterwarnings = ["error"]
+
+[tool.coverage.run]
+branch = true
+source = ["flask_file", "tests"]
+
+[tool.ruff]
+src = ["src"]
