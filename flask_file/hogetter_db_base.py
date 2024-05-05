@@ -113,7 +113,7 @@ def show_db_base_all():
     except TypeError:
         ## Usefull Only local enviroment
         posts = fetch_data.items
-
+    del fetch_data
 
     posts = sort_hogeetList(posts)
 

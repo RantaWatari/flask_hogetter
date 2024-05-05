@@ -1,8 +1,9 @@
-from flask import Flask, redirect, url_for
+from flask import Flask, redirect, session, url_for
 from flask_file import auth,hogetter
 
-def create_app():
+def create_app(test_config=None):
     app = Flask(__name__)
+    if test_config is not None: app.config.update(test_config)
     app.secret_key ="test"
 
     app.register_blueprint(auth.bp)
